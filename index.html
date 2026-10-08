@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Inventory Manager</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+    <div class="bg-white shadow-lg rounded-xl p-6 w-full max-w-xl">
+
+        <h1 class="text-3xl font-bold text-center mb-6">
+            Product Inventory Manager
+        </h1>
+
+        <div class="flex gap-3 mb-6">
+            <input
+                id="name"
+                type="text"
+                placeholder="Product Name"
+                class="border p-2 rounded w-full"
+            >
+
+            <input
+                id="price"
+                type="number"
+                placeholder="Price"
+                class="border p-2 rounded w-full"
+            >
+        </div>
+
+        <button
+            onclick="addProduct()"
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
+        >
+            Add Product
+        </button>
+
+        <h2 class="text-xl font-semibold mt-6 mb-3">
+            Products
+        </h2>
+
+        <ul id="productList" class="space-y-2"></ul>
+
+    </div>
+
+    <script src="./dist/inventory.js"></script>
+</body>
+</html>
