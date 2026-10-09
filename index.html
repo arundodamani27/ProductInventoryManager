@@ -1,51 +1,183 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Product Inventory Manager</title>
 
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
 
-    <div class="bg-white shadow-lg rounded-xl p-6 w-full max-w-xl">
+<body class="min-h-screen bg-slate-100 text-slate-800">
 
-        <h1 class="text-3xl font-bold text-center mb-6">
-            Product Inventory Manager
-        </h1>
-
-        <div class="flex gap-3 mb-6">
-            <input
-                id="name"
-                type="text"
-                placeholder="Product Name"
-                class="border p-2 rounded w-full"
-            >
-
-            <input
-                id="price"
-                type="number"
-                placeholder="Price"
-                class="border p-2 rounded w-full"
-            >
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white p-6 shadow-md">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold">
+                Product Inventory Manager
+            </h1>
+            <p class="mt-2 text-indigo-100">
+                Manage your products, quantities, and stock status.
+            </p>
         </div>
+    </header>
 
-        <button
-            onclick="addProduct()"
-            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
-        >
-            Add Product
-        </button>
+    <main class="max-w-6xl mx-auto p-5 md:p-8">
 
-        <h2 class="text-xl font-semibold mt-6 mb-3">
-            Products
-        </h2>
+        <!-- Add Product Form -->
+        <section class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-5">
+                Add New Product
+            </h2>
 
-        <ul id="productList" class="space-y-2"></ul>
+            <form id="productForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-    </div>
+                <div>
+                    <label for="name" class="block text-sm font-medium mb-2">
+                        Product Name
+                    </label>
+                    <input
+                        id="name"
+                        type="text"
+                        placeholder="Enter product name"
+                        required
+                        maxlength="80"
+                        class="border border-slate-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    >
+                </div>
 
+                <div>
+                    <label for="price" class="block text-sm font-medium mb-2">
+                        Price (₹)
+                    </label>
+                    <input
+                        id="price"
+                        type="number"
+                        placeholder="Enter price"
+                        min="0.01"
+                        step="0.01"
+                        required
+                        class="border border-slate-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    >
+                </div>
+
+                <div>
+                    <label for="quantity" class="block text-sm font-medium mb-2">
+                        Quantity
+                    </label>
+                    <input
+                        id="quantity"
+                        type="number"
+                        placeholder="Enter quantity"
+                        min="0"
+                        step="1"
+                        value="1"
+                        required
+                        class="border border-slate-300 rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                    >
+                </div>
+
+                <div class="flex items-end">
+                    <button
+                        type="submit"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg p-3 w-full transition"
+                    >
+                        + Add Product
+                    </button>
+                </div>
+
+            </form>
+
+            <p id="message" role="status" aria-live="polite" class="mt-4 text-sm"></p>
+        </section>
+
+        <!-- Dashboard Counters -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-6">
+
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-indigo-500">
+                <p class="text-slate-500 text-sm font-medium">
+                    Total Products
+                </p>
+                <p id="totalProducts" class="text-3xl font-bold mt-2">
+                    0
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+                <p class="text-slate-500 text-sm font-medium">
+                    Products Marked In Stock
+                </p>
+                <p id="availableProducts" class="text-3xl font-bold text-green-600 mt-2">
+                    0
+                </p>
+            </div>
+
+        </section>
+
+        <!-- Inventory Table -->
+        <section class="bg-white rounded-xl shadow-sm p-6">
+
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+                <div>
+                    <h2 class="text-xl font-semibold">
+                        Inventory List
+                    </h2>
+                    <p class="text-sm text-slate-500 mt-1">
+                        Update each product's stock status directly in the table.
+                    </p>
+                </div>
+
+                <input
+                    id="search"
+                    type="search"
+                    placeholder="Search products..."
+                    aria-label="Search products"
+                    class="border border-slate-300 rounded-lg p-3 w-full md:w-72 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                >
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-100 text-slate-600 uppercase">
+                        <tr>
+                            <th class="p-3">ID</th>
+                            <th class="p-3">Product</th>
+                            <th class="p-3">Price</th>
+                            <th class="p-3">Quantity</th>
+                            <th class="p-3">Stock Status</th>
+                            <th class="p-3">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="productList">
+                        <!-- Products are rendered by inventory.js -->
+                    </tbody>
+                </table>
+            </div>
+
+            <p
+                id="emptyMessage"
+                class="text-center text-slate-500 py-10"
+            >
+                No products added yet.
+            </p>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center text-slate-500 text-sm p-6">
+        Product Inventory Manager | Built with TypeScript and Tailwind CSS
+    </footer>
+
+    <!-- Compiled JavaScript -->
     <script src="./dist/inventory.js"></script>
+
 </body>
 </html>
